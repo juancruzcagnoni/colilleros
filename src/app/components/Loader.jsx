@@ -1,6 +1,15 @@
 import Image from 'next/image';
+import { useEffect } from 'react';
 
-const Loader = () => {
+const Loader = ({ onComplete }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onComplete();
+    }, 3000); // 3 segundos
+
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
   return (
     <div className="fixed inset-0 bg-white z-50 flex flex-col justify-between py-8">
       <div className="flex-1 flex flex-col items-center justify-center">
@@ -12,8 +21,8 @@ const Loader = () => {
           style={{ width: 'auto', height: 'auto' }}
           priority
         />
-        <h2 className="text-3xl font-semibold text-center mt-10 max-w-md w-90">
-          Por ésto es importante que tires acá tu colilla...
+        <h2 className="text-3xl font-semibold text-center mt-8 max-w-md w-90">
+          Por esto es importante que tires acá tu colilla...
         </h2>
       </div>
       

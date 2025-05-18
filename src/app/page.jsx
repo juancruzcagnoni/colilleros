@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import Loader from "./components/Loader";
 
 export default function Home() {
@@ -8,37 +9,23 @@ export default function Home() {
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef(null);
 
-  useEffect(() => {
-    // Si el video ya está cargado cuando el componente se monta
-    if (videoRef.current?.readyState >= 3) {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleVideoReady = () => {
+  const handleLoaderComplete = () => {
     setIsLoading(false);
-  };
-
-  const togglePlay = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-  };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-    videoRef.current.muted = !videoRef.current.muted;
   };
 
   return (
     <>
-      {isLoading && <Loader />}
+      {isLoading && <Loader onComplete={handleLoaderComplete} />}
       <div className="min-h-screen p-4 md:p-8 font-poppins">
         <main className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
-            <div className="w-full md:w-1/4">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="w-full md:w-1/4"
+            >
               <div className="w-full lg:w-80 mx-auto rounded-lg overflow-hidden relative">
                 <video
                   ref={videoRef}
@@ -46,48 +33,58 @@ export default function Home() {
                   autoPlay
                   loop
                   controls
-                  onLoadedData={handleVideoReady}
-                  onCanPlay={handleVideoReady}
                   className="w-full"
                 />
               </div>
-            </div>
+            </motion.div>
 
             <div className="w-full md:w-3/4 space-y-6">
-              <h1 className="text-3xl font-bold">Salvar el río comienza con apagar una colilla</h1>
+              <motion.h1 
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="text-3xl font-bold"
+              >
+                Salvar el río comienza con apagar una colilla
+              </motion.h1>
 
               <div className="space-y-4">
-                <div className="py-4">
-                  <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--pink)' }}>¿Por qué es un problema?</h2>
-                  <p className="">
-                    Una sola colilla puede contaminar hasta 50 litros de agua. Al llegar al río Areco, liberan nicotina, metales pesados y microplásticos que dañan la fauna acuática.
-                  </p>
-                </div>
-
-                <div className="py-4">
-                  <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--pink)' }}>Impacto local</h2>
-                  <p className="">
-                    En San Antonio de Areco, las colillas arrojadas en la vía pública suelen ser arrastradas por la lluvia hacia desagües pluviales, terminando en el río y afectando un ecosistema frágil.
-                  </p>
-                </div>
-
-                <div className="py-4">
-                  <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--pink)' }}>¿Qué podemos hacer?</h2>
-                  <p className="">
-                    Usá colilleros portátiles, participá de campañas de limpieza y concientización, y ayudá a difundir el mensaje. Cuidar el río también es nuestra responsabilidad.
-                  </p>
-                </div>
+                {['¿Por qué es un problema?', 'Impacto local', '¿Qué podemos hacer?'].map((title, index) => (
+                  <motion.div 
+                    key={title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    viewport={{ once: true }}
+                    className="py-4"
+                  >
+                    <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--pink)' }}>
+                      {title}
+                    </h2>
+                    <p className="">
+                      {title === '¿Por qué es un problema?' && 'Una sola colilla puede contaminar hasta 50 litros de agua. Al llegar al río Areco, liberan nicotina, metales pesados y microplásticos que dañan la fauna acuática.'}
+                      {title === 'Impacto local' && 'En San Antonio de Areco, las colillas arrojadas en la vía pública suelen ser arrastradas por la lluvia hacia desagües pluviales, terminando en el río y afectando un ecosistema frágil.'}
+                      {title === '¿Qué podemos hacer?' && 'Usá colilleros portátiles, participá de campañas de limpieza y concientización, y ayudá a difundir el mensaje. Cuidar el río también es nuestra responsabilidad.'}
+                    </p>
+                  </motion.div>
+                ))}
               </div>
 
-              <div className="flex justify-end mt-10">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="flex justify-end mt-10"
+              >
                 <Image 
                   src="/logo.png"
                   alt="Logo"
-                  width={200}
-                  height={200} 
+                  width={150}
+                  height={150} 
                 />
-              </div>
-
+              </motion.div>
             </div>
           </div>
         </main>
