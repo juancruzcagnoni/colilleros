@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Loader from "./components/Loader";
 
 export default function Home() {
@@ -15,7 +15,9 @@ export default function Home() {
 
   return (
     <>
-      {isLoading && <Loader onComplete={handleLoaderComplete} />}
+      <AnimatePresence>
+        {isLoading && <Loader onComplete={handleLoaderComplete} />}
+      </AnimatePresence>
       <div className="min-h-screen p-4 md:p-8 font-poppins">
         <main className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
@@ -71,8 +73,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="flex justify-end mt-10"
-              >
+              <div className="flex justify-end mt-10">
                 <Image
                   src="/logo.png"
                   alt="Logo"
