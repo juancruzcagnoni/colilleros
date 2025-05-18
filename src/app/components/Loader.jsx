@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Loader = ({ onComplete }) => {
   useEffect(() => {
@@ -11,7 +12,12 @@ const Loader = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 bg-white z-50 flex flex-col justify-between py-8">
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="fixed inset-0 bg-white z-50 flex flex-col justify-between py-8"
+    >
       <div className="flex-1 flex flex-col items-center justify-center">
         <Image 
           src="/logo.png"
@@ -32,7 +38,7 @@ const Loader = ({ onComplete }) => {
           style={{ width: '100%' }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

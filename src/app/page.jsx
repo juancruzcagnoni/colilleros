@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Loader from "./components/Loader";
 
 export default function Home() {
@@ -15,11 +15,13 @@ export default function Home() {
 
   return (
     <>
-      {isLoading && <Loader onComplete={handleLoaderComplete} />}
+      <AnimatePresence>
+        {isLoading && <Loader onComplete={handleLoaderComplete} />}
+      </AnimatePresence>
       <div className="min-h-screen p-4 md:p-8 font-poppins">
         <main className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
@@ -39,7 +41,7 @@ export default function Home() {
             </motion.div>
 
             <div className="w-full md:w-3/4 space-y-6">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -51,7 +53,7 @@ export default function Home() {
 
               <div className="space-y-4">
                 {['¿Por qué es un problema?', 'Impacto local', '¿Qué podemos hacer?'].map((title, index) => (
-                  <motion.div 
+                  <motion.div
                     key={title}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -71,20 +73,12 @@ export default function Home() {
                 ))}
               </div>
 
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="flex justify-end mt-10"
-              >
-                <Image 
-                  src="/logo.png"
-                  alt="Logo"
-                  width={150}
-                  height={150} 
-                />
-              </motion.div>
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={150}
+                height={150}
+              />
             </div>
           </div>
         </main>
